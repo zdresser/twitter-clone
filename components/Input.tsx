@@ -33,7 +33,7 @@ function Input() {
       {/* user icon goes here */}
       <img src="" alt="" className="h-11 w-11 cursor-pointer rounded-full" />
       <div className="w-full divide-y divide-gray-700">
-        <div className={``}>
+        <div className={`${selectedFile && 'pb-7'} ${input && 'space-y-2.5'}`}>
           <textarea
             value={input}
             rows={2}
