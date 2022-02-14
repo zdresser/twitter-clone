@@ -1,4 +1,15 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, BaseSyntheticEvent } from 'react'
+
+//db imports
+import { db, storage } from '../firebase'
+import {
+  addDoc,
+  collection,
+  doc,
+  serverTimestamp,
+  updateDoc,
+} from '@firebase/firestore'
+import { getDownloadURL, ref, uploadString } from '@firebase/storage'
 
 import {
   CalendarIcon,
@@ -11,14 +22,57 @@ import {
 import 'emoji-mart/css/emoji-mart.css'
 import { Picker } from 'emoji-mart'
 
+import { IFileReaderEvent } from '../types/types'
+
 function Input() {
   const [input, setInput] = useState('')
   const [selectedFile, setSelectedFile] = useState(null)
   const [showEmojis, setShowEmojis] = useState(false)
-
+  const [loading, setLoading] = useState(false)
   const filePickerRef = useRef<HTMLInputElement>(null)
 
-  const addImageToPost = () => {}
+  const sendPost = async () => {
+    if (loading) return
+    setLoading(true)
+
+    const docRef = await addDoc(collection(db, 'posts'), {
+      // id: session.user.uid,
+      // username: session.user.name,
+      // userImg: session.user.image,
+      // tag: session.user.tag,
+      text: input,
+      timestamp: serverTimestamp(),
+    })
+
+    const imageRef = ref(storage, `posts/${docRef.id}/image`)
+
+    //upload file if one has been added
+    if (selectedFile) {
+      await uploadString(imageRef, selectedFile, 'data_url').then(async () => {
+        const downloadURL = await getDownloadURL(imageRef)
+        await updateDoc(doc(db, 'posts', docRef.id), {
+          image: downloadURL,
+        })
+      })
+    }
+
+    //reset state
+    setLoading(false)
+    setInput('')
+    setSelectedFile(null)
+    setShowEmojis(false)
+  }
+
+  const addImageToPost = (e: BaseSyntheticEvent) => {
+    const reader = new FileReader()
+    if (e.target.files[0]) {
+      reader.readAsDataURL(e.target.files[0])
+    }
+
+    reader.onload = (readerEvent: any) => {
+      setSelectedFile(readerEvent.target.result)
+    }
+  }
 
   const addEmoji = (e: any) => {
     setInput((prev) => {
@@ -58,7 +112,10 @@ function Input() {
               />
             </div>
           )}
+        </div>
 
+        {/* hide icon row if loading */}
+        {!loading && (
           <div className="flex items-center justify-between pt-2.5">
             <div className="flex items-center">
               <div
@@ -109,7 +166,7 @@ function Input() {
               Tweet
             </button>
           </div>
-        </div>
+        )}
       </div>
     </div>
   )
