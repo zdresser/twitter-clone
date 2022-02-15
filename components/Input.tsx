@@ -20,15 +20,15 @@ import {
 } from '@heroicons/react/outline'
 
 import 'emoji-mart/css/emoji-mart.css'
-import { Picker } from 'emoji-mart'
-
-import { IFileReaderEvent } from '../types/types'
+import { BaseEmoji, Picker } from 'emoji-mart'
 
 function Input() {
+  //state vars
   const [input, setInput] = useState('')
   const [selectedFile, setSelectedFile] = useState(null)
   const [showEmojis, setShowEmojis] = useState(false)
   const [loading, setLoading] = useState(false)
+
   const filePickerRef = useRef<HTMLInputElement>(null)
 
   const sendPost = async () => {
@@ -74,7 +74,7 @@ function Input() {
     }
   }
 
-  const addEmoji = (e: any) => {
+  const addEmoji = (e: BaseEmoji) => {
     setInput((prev) => {
       return prev + e.native
     })
@@ -82,7 +82,9 @@ function Input() {
 
   return (
     <div
-      className={`flex space-x-3 overflow-y-scroll border-b border-gray-700 p-3`}
+      className={`flex space-x-3 overflow-y-scroll border-b border-gray-700 p-3 ${
+        loading && 'opacity-60'
+      }`}
     >
       {/* user icon goes here */}
       <img src="" alt="" className="h-11 w-11 cursor-pointer rounded-full" />
@@ -162,6 +164,7 @@ function Input() {
             <button
               className="rounded-full bg-[#1d9bf0] px-4 py-1.5 font-bold text-white shadow-md hover:bg-[#1a8cd8] disabled:cursor-default disabled:opacity-50 disabled:hover:bg-[#1d9bf0]"
               disabled={!input.trim() && !selectedFile}
+              onClick={sendPost}
             >
               Tweet
             </button>
