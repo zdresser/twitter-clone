@@ -21,6 +21,7 @@ import {
 
 import 'emoji-mart/css/emoji-mart.css'
 import { BaseEmoji, Picker } from 'emoji-mart'
+import { useSession } from 'next-auth/react'
 
 function Input() {
   //state vars
@@ -29,6 +30,8 @@ function Input() {
   const [showEmojis, setShowEmojis] = useState(false)
   const [loading, setLoading] = useState(false)
 
+  const { data: session } = useSession()
+
   const filePickerRef = useRef<HTMLInputElement>(null)
 
   const sendPost = async () => {
@@ -36,10 +39,10 @@ function Input() {
     setLoading(true)
 
     const docRef = await addDoc(collection(db, 'posts'), {
-      // id: session.user.uid,
-      // username: session.user.name,
-      // userImg: session.user.image,
-      // tag: session.user.tag,
+      id: session.user.uid,
+      username: session.user.name,
+      userImg: session.user.image,
+      tag: session.user.tag,
       text: input,
       timestamp: serverTimestamp(),
     })
@@ -87,7 +90,11 @@ function Input() {
       }`}
     >
       {/* user icon goes here */}
-      <img src="" alt="" className="h-11 w-11 cursor-pointer rounded-full" />
+      <img
+        src={session.user.image}
+        alt=""
+        className="h-11 w-11 cursor-pointer rounded-full"
+      />
       <div className="w-full divide-y divide-gray-700">
         <div className={`${selectedFile && 'pb-7'} ${input && 'space-y-2.5'}`}>
           <textarea
