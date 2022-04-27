@@ -39,7 +39,7 @@ function Input() {
     setLoading(true)
 
     const docRef = await addDoc(collection(db, 'posts'), {
-      id: session.user.uid,
+      id: session.user.uid, //Change to unique value or add prop to use as key
       username: session.user.name,
       userImg: session.user.image,
       tag: session.user.tag,
