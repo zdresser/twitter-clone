@@ -14,7 +14,6 @@ export default function Home<IHome>({
 
   if (!session) return <Login providers={providers} />
 
-  console.log(session.user)
   return (
     <div className="">
       <Head>
