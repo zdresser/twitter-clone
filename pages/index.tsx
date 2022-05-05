@@ -4,6 +4,7 @@ import Feed from '../components/Feed'
 import Login from '../components/Login'
 import { getProviders, getSession, useSession } from 'next-auth/react'
 import { IHome } from '../types/types'
+import Modal from '../components/Modal'
 
 export default function Home<IHome>({
   trendingResults,
@@ -26,7 +27,7 @@ export default function Home<IHome>({
 
         {/*Widgets*/}
 
-        {/*Modal*/}
+        <Modal />
       </main>
     </div>
   )
