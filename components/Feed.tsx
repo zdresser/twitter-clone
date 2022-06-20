@@ -5,6 +5,7 @@ import { onSnapshot, collection, query, orderBy } from '@firebase/firestore'
 import { db } from '../firebase'
 import Post from './Post'
 import { useSession } from 'next-auth/react'
+import { IPost } from '../types/types'
 
 function Feed() {
   const { data: session } = useSession()
@@ -47,7 +48,7 @@ function Feed() {
 
       <Input />
       <div className="pb-72">
-        {posts.map((post) => (
+        {posts.map((post: IPost) => (
           <Post key={post.id} id={post.id} post={post.data()} />
         ))}
       </div>

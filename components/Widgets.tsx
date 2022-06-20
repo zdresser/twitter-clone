@@ -1,8 +1,14 @@
 import { SearchIcon } from '@heroicons/react/outline'
 import Trending from './Trending'
 import Image from 'next/image'
+import { ITrendingResult, Result, follow } from '../types/types'
 
-function Widgets({ trendingResults, followResults }) {
+interface IWidget {
+  trendingResults: ITrendingResult[]
+  followResults: follow[]
+}
+
+function Widgets({ trendingResults, followResults }: IWidget) {
   return (
     <div className="ml-8 hidden space-y-5 py-1 lg:inline xl:w-[450px]">
       <div className="sticky top-0 z-50 w-11/12 bg-black py-1.5 xl:w-9/12">
@@ -18,8 +24,8 @@ function Widgets({ trendingResults, followResults }) {
 
       <div className="w-11/12 space-y-3 rounded-xl bg-[#15181c] pt-2 text-[#d9d9d9] xl:w-9/12">
         <h4 className="px-4 text-xl font-bold">What's happening</h4>
-        {trendingResults.map((result, index) => (
-          <Trending key={index} result={result} />
+        {trendingResults.map((result: ITrendingResult, index: number) => (
+          <Trending result={result} key={index} />
         ))}
         <button className="flex w-full cursor-pointer items-center justify-between px-4 py-3 font-light text-[#1d9bf0] transition duration-200 ease-out hover:bg-white hover:bg-opacity-[0.03]">
           Show more
@@ -28,7 +34,7 @@ function Widgets({ trendingResults, followResults }) {
 
       <div className="w-11/12 space-y-3 rounded-xl bg-[#15181c] pt-2 text-[#d9d9d9] xl:w-9/12">
         <h4 className="px-4 text-xl font-bold">Who to follow</h4>
-        {followResults.map((result, index) => (
+        {followResults.map((result: follow, index: number) => (
           <div
             className="flex cursor-pointer items-center px-4 py-2 transition duration-200 ease-out hover:bg-white hover:bg-opacity-[0.03]"
             key={index}

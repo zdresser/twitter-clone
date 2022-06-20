@@ -1,7 +1,12 @@
 import { DotsHorizontalIcon } from '@heroicons/react/outline'
 import Image from 'next/image'
+import { ITrendingResult, Result } from '../types/types'
 
-function Trending({ result }) {
+interface ITrending {
+  result: Result
+  key: number
+}
+function Trending({ result, key }: ITrending) {
   return (
     <div className="flex cursor-pointer items-center justify-between px-4 py-2 transition duration-200 ease-out hover:bg-white hover:bg-opacity-[0.03]">
       <div className="space-y-0.5">

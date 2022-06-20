@@ -7,8 +7,17 @@ import Login from '../components/Login'
 import Modal from '../components/Modal'
 import { modalState } from '../atoms/modalAtom'
 import { useRecoilState } from 'recoil'
-
-export default function Home({ trendingResults, followResults, providers }) {
+import { follow, ITrendingResult } from '../types/types'
+interface IHome {
+  trendingResults: ITrendingResult[]
+  followResults: follow[]
+  providers: any // revise
+}
+export default function Home({
+  trendingResults,
+  followResults,
+  providers,
+}: IHome) {
   const { data: session } = useSession()
   const [isOpen, setIsOpen] = useRecoilState(modalState)
 

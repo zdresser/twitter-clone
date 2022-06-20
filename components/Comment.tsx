@@ -6,8 +6,17 @@ import {
   ShareIcon,
 } from '@heroicons/react/outline'
 import Moment from 'react-moment'
+export interface IComment {
+  userImg: string
+  username: string
+  tag: string
+  timestamp: string
+  comment: string
+  id?: string
+  key?: string
+}
 
-function Comment({ comment }) {
+function Comment(comment: IComment) {
   return (
     <div className="flex cursor-pointer border-b border-gray-700 p-3">
       <img

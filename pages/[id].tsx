@@ -16,13 +16,18 @@ import Widgets from '../components/Widgets'
 import Post from '../components/Post'
 import { db } from '../firebase'
 import { ArrowLeftIcon } from '@heroicons/react/solid'
-import Comment from '../components/Comment'
+import IComment from '../components/Comment'
 import Head from 'next/head'
-
-function PostPage({ trendingResults, followResults, providers }) {
+import { follow, IPost, ITrendingResult, postType } from '../types/types'
+interface IPostPage {
+  trendingResults: ITrendingResult[]
+  followResults: follow[]
+  providers: any
+}
+function PostPage({ trendingResults, followResults, providers }: IPostPage) {
   const { data: session } = useSession()
   const [isOpen, setIsOpen] = useRecoilState(modalState)
-  const [post, setPost] = useState()
+  const [post, setPost] = useState<postType | undefined>()
   const [comments, setComments] = useState([])
   const router = useRouter()
   const { id } = router.query
@@ -73,7 +78,7 @@ function PostPage({ trendingResults, followResults, providers }) {
           <Post id={id} post={post} postPage />
           {comments.length > 0 && (
             <div className="pb-72">
-              {comments.map((comment) => (
+              {comments.map((comment: Comment) => (
                 <Comment
                   key={comment.id}
                   id={comment.id}

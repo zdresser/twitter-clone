@@ -20,18 +20,17 @@ import {
 } from '@heroicons/react/outline'
 import { useRouter } from 'next/router'
 import Moment from 'react-moment'
+import { Post } from '../types/types'
 
 const Modal = () => {
   const { data: session } = useSession()
   const [isOpen, setIsOpen] = useRecoilState(modalState)
   const [postId, setPostId] = useRecoilState(postIdState)
-  const [post, setPost] = useState()
+  const [post, setPost] = useState<Post | undefined>()
   const [comment, setComment] = useState('')
   const router = useRouter()
   //need to fix this useEffect error b/c this will not load the original post in the modal without the use effect. Looks like postID is empty string on load
   useEffect(() => {
-    console.log({ postId })
-
     onSnapshot(doc(db, 'posts', postId), (snapshot) => {
       setPost(snapshot.data())
     })

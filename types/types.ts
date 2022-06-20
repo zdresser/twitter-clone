@@ -19,7 +19,7 @@ type trending = {
   tags: string[]
 }
 
-type follow = {
+export type follow = {
   userImg: string
   username: string
   tag: string
@@ -28,4 +28,32 @@ export interface IHome {
   trendingResults: trending
   followResults: follow
   providers: object
+}
+
+export type postType = {
+  userImg: string
+  username: string
+  tag: string
+  timestamp: string
+  text: string
+  image: string
+  id: string
+}
+
+export interface IPost {
+  id: string
+  post: postType
+  postPage?: boolean
+}
+
+export interface Result {
+  tags: string[]
+  heading: string
+  description: string
+  img: string
+}
+
+export interface ITrendingResult {
+  results: Result[]
+  index?: number
 }
