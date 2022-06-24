@@ -16,9 +16,10 @@ import Widgets from '../components/Widgets'
 import Post from '../components/Post'
 import { db } from '../firebase'
 import { ArrowLeftIcon } from '@heroicons/react/solid'
-import IComment from '../components/Comment'
+import { IComment } from '../components/Comment'
 import Head from 'next/head'
 import { follow, IPost, ITrendingResult, postType } from '../types/types'
+import { GetServerSideProps } from 'next'
 interface IPostPage {
   trendingResults: ITrendingResult[]
   followResults: follow[]
@@ -78,11 +79,11 @@ function PostPage({ trendingResults, followResults, providers }: IPostPage) {
           <Post id={id} post={post} postPage />
           {comments.length > 0 && (
             <div className="pb-72">
-              {comments.map((comment: Comment) => (
+              {comments.map((comment: IComment) => (
                 <Comment
                   key={comment.id}
                   id={comment.id}
-                  comment={comment.data()}
+                  comment={comment.data}
                 />
               ))}
             </div>
@@ -101,7 +102,7 @@ function PostPage({ trendingResults, followResults, providers }: IPostPage) {
 
 export default PostPage
 
-export async function getServerSideProps(context) {
+export const getServerSideProps: GetServerSideProps = async (context) => {
   const trendingResults = await fetch('https://jsonkeeper.com/b/NKEV').then(
     (res) => res.json()
   )
